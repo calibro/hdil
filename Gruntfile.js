@@ -220,7 +220,7 @@ module.exports = function (grunt) {
             }
           }
       }
-    }, 
+    },
 
     // Renames files for browser caching purposes
     filerev: {
@@ -416,6 +416,12 @@ module.exports = function (grunt) {
         'svgmin'
       ]
     },
+    'gh-pages': {
+      options: {
+        base: 'dist'
+      },
+      src: ['**/*']
+    },
 
     // Test settings
     karma: {
@@ -479,5 +485,9 @@ module.exports = function (grunt) {
     'newer:jscs',
     'test',
     'build'
+  ]);
+
+  grunt.registerTask('gh-pages', [
+    'gh-pages'
   ]);
 };

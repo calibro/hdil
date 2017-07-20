@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name hdilApp.controller:MainCtrl
+ * @name hdilApp.controller:ExploreCtrl
  * @description
- * # MainCtrl
+ * # ExploreCtrl
  * Controller of the hdilApp
  */
 angular.module('hdilApp')
-  .controller('MainCtrl', function () {
+  .controller('ExploreCtrl', function () {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',

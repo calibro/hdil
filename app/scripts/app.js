@@ -15,21 +15,25 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'ui.bootstrap',
+    'angular-loading-bar',
+    'rzModule',
+    'ngCrossfilter'
   ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
+      .when('/home', {
+        templateUrl: 'views/home.html',
+        controller: 'HomeCtrl',
+        controllerAs: 'home'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
+      .when('/explore', {
+        templateUrl: 'views/explore.html',
+        controller: 'ExploreCtrl',
+        controllerAs: 'explore'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/home'
       });
   });
