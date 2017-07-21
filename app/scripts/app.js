@@ -18,8 +18,7 @@ angular
     'ngTouch',
     'ui.bootstrap',
     'angular-loading-bar',
-    'rzModule',
-    'ngCrossfilter'
+    'rzModule'
   ])
   .config(function ($routeProvider) {
     $routeProvider
