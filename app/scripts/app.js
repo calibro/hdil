@@ -18,7 +18,8 @@ angular
     'ngTouch',
     'ui.bootstrap',
     'angular-loading-bar',
-    'rzModule'
+    'rzModule',
+    'ui.checkbox'
   ])
   .config(function ($routeProvider) {
     $routeProvider

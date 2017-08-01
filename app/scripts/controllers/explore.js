@@ -10,6 +10,74 @@
 angular.module('hdilApp')
   .controller('ExploreCtrl', function ($scope, apiservice, cfservice,$filter) {
 
+    // doing stuff
+    $scope.collapseModel = {
+      odabes: false,
+      categorie: true,
+      tipologie: true,
+      datasets: true,
+      tempo: true
+    }
+
+    $scope.filtersModel = {
+      categorie:{},
+      tipologie:{}
+    }
+
+    $scope.dimensionModel = 'ctgry';
+
+    $scope.odabesModel = 'aggregated';
+
+    $scope.normModel = false;
+
+    $scope.sliders = {}
+
+    $scope.sliders.dwnld = {
+      value: 0.5,
+      options: {
+        floor: 0.0,
+        ceil: 1.0,
+        precision:1,
+        step:0.1
+      }
+    };
+
+    $scope.sliders.pgvws = {
+      value: 0.5,
+      options: {
+        floor: 0.0,
+        ceil: 1.0,
+        precision:1,
+        step:0.1
+      }
+    };
+
+
+    $scope.sliders.rtng = {
+      value: 0.5,
+      options: {
+        floor: 0.0,
+        ceil: 1.0,
+        precision:1,
+        step:0.1
+      }
+    };
+
+    // $scope.slider.pgvws = {
+    //   min: 100,
+    //   max: 180,
+    //   options: {
+    //     floor: 0,
+    //     ceil: 450
+    //   }
+    // };
+
+    // table
+
+    $scope.dataTable;
+    $scope.dataTableHeaders;
+
+    // get data
     var datasetId = '4m2z-j67g.json';
 
     apiservice.getRowsCount(datasetId)
@@ -42,26 +110,21 @@ angular.module('hdilApp')
               return d.ctgry && d.dts_id && d.tipo
             })
 
-            data.forEach(function(d){
-              if(isNaN(d.odabes)){
-                console.log(d)
-              }
-            })
             cfservice.add(data);
 
-            //console.log(cfservice.dates().all())
-             console.log(cfservice.ctgrys().all())
-             console.log(cfservice.types().all())
-            //cfservice.ctgry().filter('Agricoltura')
-          //   var subgroup = cfservice.fakedates().all()
-          //   subgroup = subgroup.filter(function(d){
-          //     return d.key.split(' - ')[1] == 'Agricoltura'
-          //   })
-           //
-          //  console.log(subgroup)
-          //console.log(cfservice.dates().all())
 
+            $scope.dataTable = $filter('datatable')(cfservice.ctgrys().all(),$scope.odabesModel);
+            $scope.dataTableHeaders = ["title","odabes","dwnld","pgvws","rtng"];
 
+            $scope.categorie = cfservice.ctgrysSingle().all();
+            $scope.categorie.forEach(function(d){
+                $scope.filtersModel.categorie[d.key] = true;
+            })
+            $scope.tipologie = cfservice.typesSingle().all();
+            $scope.tipologie.forEach(function(d){
+                $scope.filtersModel.tipologie[d.key] = true;
+            })
+            //cfservice.type().filterAll()
 
           },function(error){
             $scope.errors = error;
@@ -70,4 +133,5 @@ angular.module('hdilApp')
       },function(error){
         $scope.errors = error;
       });
+
   });

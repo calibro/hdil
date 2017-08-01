@@ -99,3 +99,34 @@ h1,h2,h3,h4,h5,h6{
 .btn-explore.btn-lg{
   border-radius: 0px;
 }
+
+/* explore */
+
+.explore-container{
+  height: calc(100vh - 52px);
+  overflow: hidden;
+}
+
+.filter-container{
+  background-color: #5A6772;
+  height: calc(100vh - 52px);
+  overflow-y: scroll;
+}
+
+.viz-container{
+  background-color: #F2F2ED;
+  height: calc(100vh - 52px);
+  overflow: hidden;
+}
+
+#mainTable{
+  background: white;
+  color: black;
+}
+
+/* slider */
+
+.rzslider .rz-bubble.rz-limit,
+.rzslider .rz-bubble{
+  color: white;
+}

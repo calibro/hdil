@@ -12,17 +12,21 @@ angular.module('hdilApp')
 
     var cf = crossfilter([]),
         ctgry = cf.dimension(function(d) { return d.ctgry}),
-        ctgrys = ctgry.group().reduce(reduceAdd,reduceRemove,reduceInitial),
+        ctgrys = ctgry.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue),
+        ctgrySingle = cf.dimension(function(d) { return d.ctgry}),
+        ctgrysSingle = ctgrySingle.group().reduce(reduceAddSingle,reduceRemoveSingle,reduceInitialSingle),
         type = cf.dimension(function(d) { return d.tipo}),
-        types = type.group().reduce(reduceAdd,reduceRemove,reduceInitial),
+        types = type.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue),
+        typeSingle = cf.dimension(function(d) { return d.tipo}),
+        typesSingle = typeSingle.group().reduce(reduceAddSingle,reduceRemoveSingle,reduceInitialSingle),
         date = cf.dimension(function(d) { return d.date }),
-        dates = date.group(d3.timeMonth).reduce(reduceAdd,reduceRemove,reduceInitial),
+        dates = date.group(d3.timeMonth).reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue),
         dts_id = cf.dimension(function(d) { return d.dts_id}),
-        dts_ids = dts_id.group().reduce(reduceAdd,reduceRemove,reduceInitial),
+        dts_ids = dts_id.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue),
         date_cat = cf.dimension(function(d) { return d.anno_mese + ' - ' + d.ctgry}),
-        date_cats = date_cat.group().reduce(reduceAdd,reduceRemove,reduceInitial),
+        date_cats = date_cat.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue),
         date_dts_id = cf.dimension(function(d) { return d.anno_mese + ' - ' + d.dts_id}),
-        date_dts_ids = date_dts_id.group().reduce(reduceAdd,reduceRemove,reduceInitial);
+        date_dts_ids = date_dts_id.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue);
 
     // all = cf.groupAll(),
     // date = cf.dimension(function(d) { return d.date }),
@@ -44,6 +48,35 @@ angular.module('hdilApp')
     // pgvws: pgvws,
     // rtng: rtng,
     // odabes: odabes
+
+    function reduceAddSingle(p, v) {
+
+      if(v.dts_id in p.datasets){
+          p.datasets[v.dts_id] += 1
+      }
+      else{
+          p.datasets[v.dts_id] = 1;
+          p.count++;
+      }
+      return p;
+    }
+
+    function reduceRemoveSingle(p, v) {
+
+      p.datasets[v.dts_id]--;
+     if(p.datasets[v.dts_id] === 0){
+         delete p.datasets[v.dts_id];
+         p.count--;
+     }
+     return p;
+
+      return p;
+    }
+
+    function reduceInitialSingle() {
+      return {count:0, datasets:{}};
+    }
+
 
     function reduceAdd(p, v) {
       ++p.count;
@@ -67,6 +100,10 @@ angular.module('hdilApp')
       return {count:0, odabes: 0, dwnld: 0, pgvws: 0, rtng: 0};
     }
 
+    function orderValue(d) {
+      return d.odabes;
+    }
+
 
     // Decide which dimension/group to expose
     var exports = {};
@@ -79,8 +116,12 @@ angular.module('hdilApp')
     exports.dates = function() { return dates};
     exports.ctgry = function() { return ctgry};
     exports.ctgrys = function() { return ctgrys};
+    exports.ctgrySingle = function() { return ctgrySingle};
+    exports.ctgrysSingle = function() { return ctgrysSingle};
     exports.type = function() { return type};
     exports.types = function() { return types};
+    exports.typeSingle = function() { return typeSingle};
+    exports.typesSingle = function() { return typesSingle};
     exports.dts_id = function() { return dts_id};
     exports.dts_ids = function() { return dts_ids};
     exports.date_cat = function() { return date_cat};

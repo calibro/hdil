@@ -1,1 +1,119 @@
-<p>This is the about view.</p>
+<div class="container-fluid explore-container">
+  <div class="row">
+    <div class="col-md-3 filter-container">
+
+      <div class="filter-dimension-container">
+        <button type="button" class="btn btn-default" ng-click="collapseModel.odabes = !collapseModel.odabes">odabes</button>
+        <div uib-collapse="collapseModel.odabes">
+          <div class="slider-container">
+            <h5>download</h5>
+            <rzslider
+               rz-slider-model="sliders.dwnld.value"
+               rz-slider-options="sliders.dwnld.options"></rzslider>
+          </div>
+          <div class="slider-container">
+            <h5>visualizzazioni</h5>
+            <rzslider
+               rz-slider-model="sliders.pgvws.value"
+               rz-slider-options="sliders.pgvws.options"></rzslider>
+          </div>
+          <div class="slider-container">
+            <h5>voti</h5>
+            <rzslider
+               rz-slider-model="sliders.rtng.value"
+               rz-slider-options="sliders.rtng.options"></rzslider>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="filter-dimension-container">
+        <button type="button" class="btn btn-default" ng-click="collapseModel.categorie = !collapseModel.categorie">categorie</button>
+        <div uib-collapse="collapseModel.categorie">
+          <div class="filter-wrapper" ng-repeat="categoria in categorie">
+
+            <checkbox
+                ng-model="filtersModel.categorie[categoria.key]"
+                ng-change="onChange()"
+
+            ></checkbox>
+            {{categoria.key}} ({{categoria.value.count}})
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-dimension-container">
+        <button type="button" class="btn btn-default" ng-click="collapseModel.tipologie = !collapseModel.tipologie">tipologie</button>
+        <div uib-collapse="collapseModel.tipologie">
+          <div class="filter-wrapper" ng-repeat="tipologia in tipologie">
+
+            <checkbox
+                ng-model="filtersModel.tipologie[tipologia.key]"
+                ng-change="onChange()"
+
+            ></checkbox>
+            {{tipologia.key}} ({{tipologia.value.count}})
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-dimension-container">
+        <button type="button" class="btn btn-default" ng-click="collapseModel.datasets = !collapseModel.datasets">datasets</button>
+        <div uib-collapse="collapseModel.datasets">
+          <div class="well well-lg">Some content</div>
+        </div>
+      </div>
+
+      <div class="filter-dimension-container">
+        <button type="button" class="btn btn-default" ng-click="collapseModel.tempo = !collapseModel.tempo">tempo</button>
+        <div uib-collapse="collapseModel.tempo">
+          <div class="well well-lg">Some content</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-9 viz-container">
+      <div class="row">
+        <div class="col-md-5">
+          <h6>Mostra</h6>
+          <div class="btn-group">
+              <label class="btn btn-primary" ng-model="dimensionModel" uib-btn-radio="'ctgry'">Categorie</label>
+              <label class="btn btn-primary" ng-model="dimensionModel" uib-btn-radio="'type'">Tipologie</label>
+              <label class="btn btn-primary" ng-model="dimensionModel" uib-btn-radio="'dts_id'">Dataset</label>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <h6>Mostra odabes</h6>
+          <div class="btn-group">
+              <label class="btn btn-primary" ng-model="odabesModel" uib-btn-radio="'aggregated'">aggregato</label>
+              <label class="btn btn-primary" ng-model="odabesModel" uib-btn-radio="'evolution'">evoluzione</label>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <checkbox ng-model="normModel"></checkbox>
+          normalizza
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table" id="mainTable">
+            <thead>
+              <tr>
+                <th ng-repeat="head in dataTableHeaders">
+                  {{head}}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in dataTable">
+                <td ng-repeat="head in dataTableHeaders">
+                  {{row[head]}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
