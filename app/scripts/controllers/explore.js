@@ -8,20 +8,21 @@
  * Controller of the hdilApp
  */
 angular.module('hdilApp')
-  .controller('ExploreCtrl', function ($scope, apiservice, cfservice,$filter) {
+  .controller('ExploreCtrl', function ($scope, apiservice, cfservice,$filter, $timeout) {
 
-    // doing stuff
+    // models
     $scope.collapseModel = {
       odabes: false,
       categorie: true,
       tipologie: true,
       datasets: true,
-      tempo: true
+      tempo: true,
     }
 
     $scope.filtersModel = {
       categorie:{},
-      tipologie:{}
+      tipologie:{},
+      datasets:{}
     }
 
     $scope.dimensionModel = 'ctgry';
@@ -29,6 +30,10 @@ angular.module('hdilApp')
     $scope.odabesModel = 'aggregated';
 
     $scope.normModel = false;
+
+    $scope.searchDatasets = '';
+
+    $scope.showDatasetsList = false;
 
     $scope.sliders = {}
 
@@ -63,14 +68,26 @@ angular.module('hdilApp')
       }
     };
 
-    // $scope.slider.pgvws = {
-    //   min: 100,
-    //   max: 180,
-    //   options: {
-    //     floor: 0,
-    //     ceil: 450
-    //   }
-    // };
+    $scope.sliderTime = {
+        options: {
+          translate: function(date) {
+            if (date){
+              var formatTime = d3.timeFormat("%B %Y");
+              return formatTime(date);
+            }else {
+              return '';
+            }
+
+          },
+          noSwitching:true
+        }
+    };
+
+    $scope.refreshSlider = function () {
+      $timeout(function () {
+        $scope.$broadcast('rzSliderForceRender');
+      });
+    };
 
     // table
 
@@ -101,7 +118,7 @@ angular.module('hdilApp')
                   dwnld: dwnld,
                   pgvws: pgvws,
                   rtng: rtng,
-                  odabes: odabes,
+                  //odabes: odabes,
                   anno_mese: d.anno_mese
                 }
             })
@@ -110,11 +127,15 @@ angular.module('hdilApp')
               return d.ctgry && d.dts_id && d.tipo
             })
 
+
+            $scope.dts_dict = d3.map(data, function(d) { return d.dts_id; })
+
             cfservice.add(data);
 
 
-            $scope.dataTable = $filter('datatable')(cfservice.ctgrys().all(),$scope.odabesModel);
-            $scope.dataTableHeaders = ["title","odabes","dwnld","pgvws","rtng"];
+            //$scope.dataTable = $filter('datatable')(cfservice.ctgrys().all(),$scope.odabesModel);
+            $scope.dataTable = cfservice.ctgrys().all();
+            $scope.dataTableHeaders = ["title","odabes","viz","dwnld","pgvws","rtng"];
 
             $scope.categorie = cfservice.ctgrysSingle().all();
             $scope.categorie.forEach(function(d){
@@ -124,7 +145,16 @@ angular.module('hdilApp')
             $scope.tipologie.forEach(function(d){
                 $scope.filtersModel.tipologie[d.key] = true;
             })
-            //cfservice.type().filterAll()
+
+            $scope.datasets = cfservice.dts_idsSingle().all();
+            $scope.datasets.forEach(function(d){
+                $scope.filtersModel.datasets[d.key] = true;
+            })
+
+            $scope.sliderTime.options.stepsArray = d3.timeMonth.range(cfservice.date().bottom(1)[0].date, cfservice.date().top(1)[0].date)
+            $scope.sliderTime.minValue = $scope.sliderTime.options.stepsArray[0];
+            $scope.sliderTime.maxValue = $scope.sliderTime.options.stepsArray[$scope.sliderTime.options.stepsArray.length-1];
+            $scope.sliderTime.options.onChange = $scope.changeFilterTime;
 
           },function(error){
             $scope.errors = error;
@@ -133,5 +163,115 @@ angular.module('hdilApp')
       },function(error){
         $scope.errors = error;
       });
+
+      /* change filters*/
+
+
+      $scope.changeFilterCtgry = function(){
+        var filter  = d3.entries($scope.filtersModel.categorie)
+          .filter(function(d){
+            return d.value
+          })
+          .map(function(d){
+            return d.key;
+          })
+        cfservice.ctgrySingle().filter(function(d){
+          return filter.indexOf(d) > -1;
+        });
+      }
+
+      $scope.changeFilterType = function(){
+        var filter  = d3.entries($scope.filtersModel.tipologie)
+          .filter(function(d){
+            return d.value
+          })
+          .map(function(d){
+            return d.key;
+          })
+        cfservice.typeSingle().filter(function(d){
+          return filter.indexOf(d) > -1;
+        });
+      }
+
+      $scope.changeFilterDatasets = function(){
+        var filter  = d3.entries($scope.filtersModel.datasets)
+          .filter(function(d){
+            return d.value
+          })
+          .map(function(d){
+            return d.key;
+          })
+        cfservice.dts_idSingle().filter(function(d){
+          return filter.indexOf(d) > -1;
+        });
+      }
+
+      $scope.changeFilterTime = function(sliderId, modelValue, highValue, pointerType){
+        cfservice.date().filter(function(d){
+          return d.getTime() >= modelValue.getTime() && d.getTime() <= highValue.getTime();
+        });
+      }
+
+      $scope.filterSelectAll = function(filter){
+        for (var key in $scope.filtersModel[filter]) {
+            $scope.filtersModel[filter][key] = true;
+        }
+        switch (filter) {
+          case 'categorie':
+            $scope.changeFilterCtgry();
+            break;
+          case 'tipologie':
+            $scope.changeFilterType();
+            break;
+          case 'datasets':
+            $scope.changeFilterDatasets()
+            break;
+        }
+      }
+
+      $scope.filterDeSelectAll = function(filter){
+        for (var key in $scope.filtersModel[filter]) {
+            $scope.filtersModel[filter][key] = false;
+        }
+        switch (filter) {
+          case 'categorie':
+            $scope.changeFilterCtgry();
+            break;
+          case 'tipologie':
+            $scope.changeFilterType();
+            break;
+          case 'datasets':
+            $scope.changeFilterDatasets()
+            break;
+        }
+
+      }
+
+      /* watchers */
+      $scope.$watch('dimensionModel', function(newValue, oldValue){
+        if(newValue != oldValue && newValue){
+          switch (newValue) {
+            case 'ctgry':
+              $scope.dataTable = cfservice.ctgrys().all();
+              break;
+            case 'type':
+              $scope.dataTable = cfservice.types().all();
+              break;
+            case 'dts_id':
+              $scope.dataTable = cfservice.dts_ids().all();
+              break;
+          }
+        }
+      })
+
+      $scope.$watchGroup(['sliders.dwnld.value','sliders.pgvws.value','sliders.rtng.value'], function(newValue, oldValue){
+        cfservice.upadateOdabes(newValue)
+
+        //mock updates! find a better way!
+        cfservice.typeSingle().filter('API')
+        cfservice.typeSingle().filterAll()
+      })
+
+
 
   });

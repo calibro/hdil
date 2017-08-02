@@ -11,6 +11,9 @@
 angular.module('hdilApp')
   .filter('datatable', function () {
     return function (input, aggregation) {
+      if(!input || !input.length || !aggregation){
+        return
+      }
       var output;
 
       if(aggregation == 'aggregated'){
@@ -21,8 +24,6 @@ angular.module('hdilApp')
           values.title = d.key
           values.odabesPercentage = odabesScale(d.value.odabes)
           return values;
-        }).sort(function(a,b){
-          return d3.descending(a.odabes,b.odabes)
         })
       }
 

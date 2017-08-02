@@ -19,7 +19,8 @@ angular
     'ui.bootstrap',
     'angular-loading-bar',
     'rzModule',
-    'ui.checkbox'
+    'ui.checkbox',
+    'vs-repeat'
   ])
   .config(function ($routeProvider) {
     $routeProvider

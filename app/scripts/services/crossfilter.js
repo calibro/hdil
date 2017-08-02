@@ -23,6 +23,8 @@ angular.module('hdilApp')
         dates = date.group(d3.timeMonth).reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue),
         dts_id = cf.dimension(function(d) { return d.dts_id}),
         dts_ids = dts_id.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue),
+        dts_idSingle = cf.dimension(function(d) { return d.dts_id}),
+        dts_idsSingle = dts_idSingle.group().reduce(reduceAddSingle,reduceRemoveSingle,reduceInitialSingle),
         date_cat = cf.dimension(function(d) { return d.anno_mese + ' - ' + d.ctgry}),
         date_cats = date_cat.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue),
         date_dts_id = cf.dimension(function(d) { return d.anno_mese + ' - ' + d.dts_id}),
@@ -48,6 +50,10 @@ angular.module('hdilApp')
     // pgvws: pgvws,
     // rtng: rtng,
     // odabes: odabes
+
+    var a = 0.5,
+        b = 0.5,
+        c = 0.5;
 
     function reduceAddSingle(p, v) {
 
@@ -80,19 +86,19 @@ angular.module('hdilApp')
 
     function reduceAdd(p, v) {
       ++p.count;
-      p.odabes += v.odabes;
       p.dwnld += v.dwnld;
       p.pgvws += v.pgvws;
       p.rtng += v.rtng;
+      p.odabes = odabes(p.dwnld,p.pgvws,p.rtng)
       return p;
     }
 
     function reduceRemove(p, v) {
       --p.count;
-      p.odabes -= v.odabes;
       p.dwnld -= v.dwnld;
       p.pgvws -= v.pgvws;
       p.rtng -= v.rtng;
+      p.odabes = odabes(p.dwnld,p.pgvws,p.rtng)
       return p;
     }
 
@@ -104,6 +110,9 @@ angular.module('hdilApp')
       return d.odabes;
     }
 
+    function odabes(dwnld,pgvws,rtng) {
+      return Math.round(((dwnld*a)+(pgvws*b)+(rtng*c))/3);
+    }
 
     // Decide which dimension/group to expose
     var exports = {};
@@ -124,16 +133,18 @@ angular.module('hdilApp')
     exports.typesSingle = function() { return typesSingle};
     exports.dts_id = function() { return dts_id};
     exports.dts_ids = function() { return dts_ids};
+    exports.dts_idSingle = function() { return dts_idSingle};
+    exports.dts_idsSingle = function() { return dts_idsSingle};
     exports.date_cat = function() { return date_cat};
     exports.date_cats = function() { return date_cats};
     exports.date_dts_id = function() { return date_dts_id};
     exports.date_dts_ids = function() { return date_dts_ids};
-    // exports.partner = function() { return partner};
-    // exports.partners = function() { return partners};
-    // exports.continent = function() { return continent};
-    // exports.continents = function() { return continents};
-    // exports.type = function() { return type};
-    // exports.types = function() { return types};
+
+    exports.upadateOdabes = function(data) {
+      a = data[0],
+      b = data[1],
+      c = data[2]
+    };
     // exports.imp = function() { return all.reduceSum(function(d) { return d.imp; }).value()};
     // exports.exp  = function() { return all.reduceSum(function(d) { return d.exp; }).value()};
     // exports.total  = function() { return all.reduceSum(function(d) { return d.total; }).value()};
