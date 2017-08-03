@@ -111,7 +111,7 @@ angular.module('hdilApp')
     }
 
     function odabes(dwnld,pgvws,rtng) {
-      return Math.round(((dwnld*a)+(pgvws*b)+(rtng*c))/3);
+      return Math.round(((dwnld*a)+(pgvws*b)+(rtng*c))/3); //remove round!!!
     }
 
     // Decide which dimension/group to expose

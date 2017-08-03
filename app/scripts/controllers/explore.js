@@ -89,6 +89,10 @@ angular.module('hdilApp')
       });
     };
 
+    //evolution
+
+    $scope.evolution = {}
+
     // table
 
     $scope.dataTable;
@@ -125,7 +129,6 @@ angular.module('hdilApp')
                   dwnld: dwnld,
                   pgvws: pgvws,
                   rtng: rtng,
-                  //odabes: odabes,
                   anno_mese: d.anno_mese
                 }
             })
@@ -139,8 +142,6 @@ angular.module('hdilApp')
 
             cfservice.add(data);
 
-
-            //$scope.dataTable = $filter('datatable')(cfservice.ctgrys().all(),$scope.odabesModel);
             $scope.dataTable = cfservice.ctgrys().all();
             $scope.tableTotalItems = $scope.dataTable.length;
             $scope.dataTableHeaders = ["title","odabes","viz","dwnld","pgvws","rtng"];
