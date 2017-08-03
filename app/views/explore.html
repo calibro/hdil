@@ -79,7 +79,7 @@
 
                 <checkbox
                     ng-model="filtersModel.datasets[dataset.key]"
-                    ng-change="onChange()"
+                    ng-change="changeFilterDatasets()"
 
                 ></checkbox>
                 {{dts_dict.get(dataset.key).nome}}
@@ -99,7 +99,7 @@
 
     </div>
     <div class="col-md-9 viz-container">
-      <div class="row">
+      <div class="row table-controller">
         <div class="col-md-5">
           <h6>Mostra</h6>
           <div class="btn-group">
@@ -120,8 +120,8 @@
           normalizza
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12">
+      <div class="row table-container">
+        <div class="col-md-12 flex">
           <table class="table" id="mainTable">
             <thead>
               <tr>
@@ -131,8 +131,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="row in dataTable | datatable:odabesModel | tableExclusion |orderBy:'odabes':true | limitTo:100">
-                <td ng-repeat="head in dataTableHeaders" ng-class="{fitCell: head == 'odabes', titleCell:  head == 'title'}">
+              <tr ng-repeat="row in dataTable | datatable:odabesModel | tableExclusion |orderBy:'odabes':true | limitTo:tableItemsPerPage:tableOffset">
+                <td ng-repeat="head in dataTableHeaders" ng-class="{fitCell: head == 'odabes', vizCell: head == 'viz', titleCell:  head == 'title'}">
                   <span ng-if="head != 'viz' && dimensionModel != 'dts_id'">{{row[head]}}</span>
                   <span ng-if="head == 'title' && dimensionModel == 'dts_id'"><a ng-href="{{dts_dict.get(row[head]).lnk_data}}" target="_blank">{{dts_dict.get(row[head]).nome }}</a></span>
                   <span ng-if="head != 'title' && dimensionModel == 'dts_id'">{{row[head]}}</span>
@@ -141,6 +141,24 @@
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+      <div class="row table-pagination">
+        <div class="col-md-12">
+          <ul
+            ng-class="{notPaginated: tableTotalItems <= tableItemsPerPage}"
+            uib-pagination boundary-links="true"
+            force-ellipses="true"
+            total-items="tableTotalItems"
+            max-size="tablePagMaxSize"
+            items-per-page="tableItemsPerPage"
+            ng-model="tableCurrentPage"
+            ng-change="pageChange()"
+            class="pagination-sm"
+            previous-text="&lsaquo;"
+            next-text="&rsaquo;"
+            first-text="&laquo;"
+            last-text="&raquo;"></ul>
         </div>
       </div>
     </div>

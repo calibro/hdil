@@ -117,12 +117,80 @@ h1,h2,h3,h4,h5,h6{
   background-color: #F2F2ED;
   height: calc(100vh - 52px);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-#mainTable{
+.table-controller,
+.table-pagination{
+  flex-grow: 0;
+}
+
+.table-pagination{
+    text-align: center;
+}
+
+.table-pagination .notPaginated{
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.table-container{
+  flex-grow: 1;
+  overflow-y: hidden;
+  display: flex;
+}
+
+
+#mainTable {
   background: white;
   color: black;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin-bottom: 0px;
 }
+
+#mainTable thead {
+  display: block;
+}
+
+#mainTable thead {
+  display: block;
+}
+#mainTable thead > tr {
+  display: flex;
+}
+#mainTable thead > tr > th {
+  flex: 1 1;
+}
+
+#mainTable thead > tr > th:nth-child(2) {
+  flex: 0 0 10%;
+}
+
+
+#mainTable tbody {
+  overflow-y: auto;
+  width: 100%;
+}
+
+#mainTable tbody {
+  display: block;
+}
+
+#mainTable tbody > tr {
+  display: flex;
+}
+
+#mainTable tbody > tr > td {
+  flex: 1 1;
+}
+
+#mainTable tbody > tr > td:nth-child(2) {
+  flex: 0 0 10%;
+}
+
 
 /* slider */
 
@@ -156,19 +224,22 @@ h1,h2,h3,h4,h5,h6{
 }
 
 .fitCell{
-  width:1%;
-  white-space:nowrap;
   text-align: right;
 }
 
 .vizCell{
-  min-width: 200px;
+  min-width: 30%;
 }
 
 .titleCell{
-  max-width:100px;
-  min-width:100px;
+  min-width: 25%;
   white-space:nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+/* utilities */
+
+.flex{
+  display: flex;
 }

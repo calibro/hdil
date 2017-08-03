@@ -11,13 +11,14 @@
 angular.module('hdilApp')
   .filter('datatable', function () {
     return function (input, aggregation) {
+      //console.log(input,aggregation)
       if(!input || !input.length || !aggregation){
         return
       }
       var output;
 
       if(aggregation == 'aggregated'){
-        var odabesScale = d3.scaleLinear().rangeRound([0,100]).domain([0,d3.max(input,function(d){return d.value.odabes})])
+        var odabesScale = d3.scaleLinear().rangeRound([1,100]).domain([0,d3.max(input,function(d){return d.value.odabes})])
         output = input.map(function(d){
 
           var values = d.value;
