@@ -133,7 +133,7 @@
             <tbody>
               <tr ng-repeat="row in dataTable | tableExclusion | orderBy:'odabes':true | limitTo:tableItemsPerPage:tableOffset track by row.title">
                 <td ng-repeat="head in dataTableHeaders" ng-class="{fitCell: head == 'odabes', vizCell: head == 'viz', titleCell:  head == 'title'}">
-                  <span ng-if="head != 'viz' && dimensionModel != 'dts_id'">{{row[head]}}</span>
+                  <span ng-if="head != 'viz' && dimensionModel != 'dts_id'">{{row[head] | tablenumber}}</span>
                   <span ng-if="head == 'title' && dimensionModel == 'dts_id'"><a ng-href="{{dts_dict.get(row[head]).lnk_data}}" target="_blank">{{dts_dict.get(row[head]).nome }}</a></span>
                   <span ng-if="head != 'title' && dimensionModel == 'dts_id'">{{row[head]}}</span>
                   <span ng-if="head == 'viz'" ng-style="{width: row['odabesPercentage']+'%'}" class="odabes-bar"></span>
