@@ -135,8 +135,9 @@
                 <td ng-repeat="head in dataTableHeaders" ng-class="{fitCell: head == 'odabes', vizCell: head == 'viz', titleCell:  head == 'title'}">
                   <span ng-if="head != 'viz' && dimensionModel != 'dts_id'">{{row[head] | tablenumber}}</span>
                   <span ng-if="head == 'title' && dimensionModel == 'dts_id'"><a ng-href="{{dts_dict.get(row[head]).lnk_data}}" target="_blank">{{dts_dict.get(row[head]).nome }}</a></span>
-                  <span ng-if="head != 'title' && dimensionModel == 'dts_id'">{{row[head]}}</span>
-                  <span ng-if="head == 'viz'" ng-style="{width: row['odabesPercentage']+'%'}" class="odabes-bar"></span>
+                  <span ng-if="head != 'title' && dimensionModel == 'dts_id'">{{row[head] | tablenumber}}</span>
+                  <span ng-if="head == 'viz' && odabesModel=='aggregated'" ng-style="{width: row['odabesPercentage']+'%'}" class="odabes-bar"></span>
+                  <div ng-if="head == 'viz' && odabesModel=='evolution'" class="odabes-timeline" data="row.evolution" timeline></div>
                 </td>
               </tr>
             </tbody>
