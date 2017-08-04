@@ -89,10 +89,6 @@ angular.module('hdilApp')
       });
     };
 
-    //evolution
-
-    $scope.evolution = {}
-
     // table
 
     $scope.dataTable;
@@ -137,12 +133,12 @@ angular.module('hdilApp')
               return d.ctgry && d.dts_id && d.tipo
             })
 
-
             $scope.dts_dict = d3.map(data, function(d) { return d.dts_id; })
 
             cfservice.add(data);
 
-            $scope.dataTable = cfservice.ctgrys().all();
+            $scope.dataTable = cfservice.aggregated($scope.dimensionModel)
+
             $scope.tableTotalItems = $scope.dataTable.length;
             $scope.dataTableHeaders = ["title","odabes","viz","dwnld","pgvws","rtng"];
 
@@ -187,7 +183,6 @@ angular.module('hdilApp')
         cfservice.ctgrySingle().filter(function(d){
           return filter.indexOf(d) > -1;
         });
-        $scope.tableTotalItems = getPaginationTotal($scope.dataTable,$scope.odabesModel);
       }
 
       $scope.changeFilterType = function(){
@@ -201,7 +196,6 @@ angular.module('hdilApp')
         cfservice.typeSingle().filter(function(d){
           return filter.indexOf(d) > -1;
         });
-        $scope.tableTotalItems = getPaginationTotal($scope.dataTable,$scope.odabesModel);
       }
 
       $scope.changeFilterDatasets = function(){
@@ -215,14 +209,12 @@ angular.module('hdilApp')
         cfservice.dts_idSingle().filter(function(d){
           return filter.indexOf(d) > -1;
         });
-        $scope.tableTotalItems = getPaginationTotal($scope.dataTable,$scope.odabesModel);
       }
 
       $scope.changeFilterTime = function(sliderId, modelValue, highValue, pointerType){
         cfservice.date().filter(function(d){
           return d.getTime() >= modelValue.getTime() && d.getTime() <= highValue.getTime();
         });
-        $scope.tableTotalItems = getPaginationTotal($scope.dataTable,$scope.odabesModel);
       }
 
       $scope.filterSelectAll = function(filter){
@@ -265,28 +257,36 @@ angular.module('hdilApp')
       }
 
       var getPaginationTotal = function(datatable,odabesModel) {
-        var total = $filter('datatable')(datatable, odabesModel)
-        total = $filter('tableExclusion')(total).length
+        var total = $filter('tableExclusion')(datatable).length
         return total;
       }
 
       /* watchers */
       $scope.$watch('dimensionModel', function(newValue, oldValue){
         if(newValue != oldValue && newValue){
-          switch (newValue) {
-            case 'ctgry':
-              $scope.dataTable = cfservice.ctgrys().all();
-              $scope.tableTotalItems = getPaginationTotal($scope.dataTable,$scope.odabesModel);
+          switch ($scope.odabesModel) {
+            case 'aggregated':
+              $scope.dataTable = cfservice.aggregated(newValue)
               break;
-            case 'type':
-              $scope.dataTable = cfservice.types().all();
-              $scope.tableTotalItems = getPaginationTotal($scope.dataTable,$scope.odabesModel);
-              break;
-            case 'dts_id':
-              $scope.dataTable = cfservice.dts_ids().all();
-              $scope.tableTotalItems = getPaginationTotal($scope.dataTable,$scope.odabesModel);
+            case 'evolution':
+              $scope.dataTable = cfservice.evolution(newValue)
               break;
           }
+          $scope.tableTotalItems = getPaginationTotal($scope.dataTable);
+        }
+      })
+
+      $scope.$watch('odabesModel', function(newValue, oldValue){
+        if(newValue != oldValue && newValue){
+          switch (newValue) {
+            case 'aggregated':
+              $scope.dataTable = cfservice.aggregated($scope.dimensionModel)
+              break;
+            case 'evolution':
+              $scope.dataTable = cfservice.evolution($scope.dimensionModel)
+              break;
+          }
+          $scope.tableTotalItems = getPaginationTotal($scope.dataTable);
         }
       })
 
@@ -298,6 +298,22 @@ angular.module('hdilApp')
         cfservice.typeSingle().filterAll()
       })
 
+      cfservice.cf().onChange(function(event){
+        if(!$scope.dataTable){
+          return;
+        }
+        if(event == 'filtered'){
+          switch ($scope.odabesModel) {
+            case 'aggregated':
+              $scope.dataTable = cfservice.aggregated($scope.dimensionModel)
+              break;
+            case 'evolution':
+              $scope.dataTable = cfservice.evolution($scope.dimensionModel)
+              break;
+          }
+          $scope.tableTotalItems = getPaginationTotal($scope.dataTable);
+        }
+      })
 
 
   });

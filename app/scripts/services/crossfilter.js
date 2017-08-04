@@ -25,8 +25,10 @@ angular.module('hdilApp')
         dts_ids = dts_id.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue),
         dts_idSingle = cf.dimension(function(d) { return d.dts_id}),
         dts_idsSingle = dts_idSingle.group().reduce(reduceAddSingle,reduceRemoveSingle,reduceInitialSingle),
-        date_cat = cf.dimension(function(d) { return d.anno_mese + ' - ' + d.ctgry}),
-        date_cats = date_cat.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue),
+        date_ctgry = cf.dimension(function(d) { return d.anno_mese + ' - ' + d.ctgry}),
+        date_ctgrys = date_ctgry.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue),
+        date_type = cf.dimension(function(d) { return d.anno_mese + ' - ' + d.tipo}),
+        date_types = date_type.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue),
         date_dts_id = cf.dimension(function(d) { return d.anno_mese + ' - ' + d.dts_id}),
         date_dts_ids = date_dts_id.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue);
 
@@ -135,10 +137,83 @@ angular.module('hdilApp')
     exports.dts_ids = function() { return dts_ids};
     exports.dts_idSingle = function() { return dts_idSingle};
     exports.dts_idsSingle = function() { return dts_idsSingle};
-    exports.date_cat = function() { return date_cat};
-    exports.date_cats = function() { return date_cats};
+    exports.date_ctgry = function() { return date_ctgry};
+    exports.date_ctgrys = function() { return date_ctgrys};
+    exports.date_type = function() { return date_type};
+    exports.date_types = function() { return date_types};
     exports.date_dts_id = function() { return date_dts_id};
     exports.date_dts_ids = function() { return date_dts_ids};
+
+    exports.cf = function() { return cf};
+
+    exports.evolution = function(dimension) {
+      var source;
+
+      switch (dimension) {
+        case 'ctgry':
+          source = date_ctgrys.all()
+          break;
+        case 'type':
+          source = date_types.all()
+          break;
+        case 'dts_id':
+          source = date_dts_ids.all()
+          break;
+      }
+
+      var nest = d3.nest()
+        .key(function(d){return d.key.split(' - ')[1]})
+        .entries(source)
+
+      var output = nest.map(function(d){
+        d.title = d.key
+        delete d.key
+        d.evolution = d.values.map(function(v){
+          var elm = {}
+          var parseTime = d3.timeParse("%Y/%m");
+          elm.date = parseTime(v.key.split(' - ')[0]);
+          elm.value = v.value.odabes;
+          return elm
+        })
+        d.odabes = d3.sum(d.values, function(v){return v.value.odabes})
+        d.dwnld = d3.sum(d.values, function(v){return v.value.dwnld})
+        d.rtng = d3.sum(d.values, function(v){return v.value.rtng})
+        d.pgvws = d3.sum(d.values, function(v){return v.value.pgvws})
+        delete d.values
+        return d
+      })
+
+      return output
+    };
+
+    exports.aggregated = function(dimension) {
+      var source;
+
+      switch (dimension) {
+        case 'ctgry':
+          source = ctgrys.all()
+          break;
+        case 'type':
+          source = types.all()
+          break;
+        case 'dts_id':
+          source = dts_ids.all()
+          break;
+        default:
+
+      }
+
+      var odabesScale = d3.scaleLinear().rangeRound([1,100]).domain([0,d3.max(source,function(d){return d.value.odabes})])
+      var output = source.map(function(d){
+
+        var values = d.value;
+        values.title = d.key
+        values.odabesPercentage = odabesScale(d.value.odabes)
+        return values;
+      })
+
+      return output
+    };
 
     exports.upadateOdabes = function(data) {
       a = data[0],
