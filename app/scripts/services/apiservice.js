@@ -11,6 +11,7 @@ angular.module('hdilApp')
   .factory('apiservice', function ($http, $q) {
 
     var resourceEnpoint = 'https://www.dati.lombardia.it/resource/';
+    var viewEndpoint = 'https://www.dati.lombardia.it/views/';
     var token = "TBT9Tm1QSXZ4rGrsVGYYIbRrG";
 
     return {
@@ -43,6 +44,26 @@ angular.module('hdilApp')
         }
 
         var url = resourceEnpoint + datasetId;
+
+        var deferred = $q.defer();
+        $http.get(url, {params:params})
+          .then(
+            function(response){
+              deferred.resolve(response.data);
+            },
+            function(err){
+              deferred.reject("An error occured while fetching url");
+            }
+          )
+        return deferred.promise;
+      },
+      getDatasetInfo: function(datasetId){
+
+        var params = {
+          "$$app_token" : token
+        }
+
+        var url = viewEndpoint + datasetId;
 
         var deferred = $q.defer();
         $http.get(url, {params:params})

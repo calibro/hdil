@@ -113,6 +113,17 @@ angular.module('hdilApp')
     // get data
     var datasetId = '4m2z-j67g.json';
 
+    apiservice.getDatasetInfo(datasetId)
+      .then(
+        function(data){
+          var formatTime = d3.timeFormat("%d/%m/%Y");
+          $scope.lastModified = formatTime(new Date(data.viewLastModified*1000))
+        },
+        function(error){
+            $scope.errors = error;
+        }
+      );
+
     apiservice.getRowsCount(datasetId)
       .then(function(data){
         var limit = data[0].count;
@@ -169,6 +180,8 @@ angular.module('hdilApp')
             $scope.sliderTime.minValue = $scope.sliderTime.options.stepsArray[0];
             $scope.sliderTime.maxValue = $scope.sliderTime.options.stepsArray[$scope.sliderTime.options.stepsArray.length-1];
             $scope.sliderTime.options.onChange = $scope.changeFilterTime;
+
+            $scope.totalDatasets = cfservice.dts_idsSingle().size();
 
           },function(error){
             $scope.errors = error;

@@ -32,27 +32,6 @@ angular.module('hdilApp')
         date_dts_id = cf.dimension(function(d) { return d.anno_mese + ' - ' + d.dts_id}),
         date_dts_ids = date_dts_id.group().reduce(reduceAdd,reduceRemove,reduceInitial).order(orderValue);
 
-    // all = cf.groupAll(),
-    // date = cf.dimension(function(d) { return d.date }),
-    // dates = date.group(d3.timeMonth).reduceSum(function(d){return d.odabes}),
-    // ctgry = cf.dimension(function(d) { return d.ctgry}),
-    // ctgrys = ctgry.group().reduceSum(function(d){return d.odabes});
-    // continent = cf.dimension(function(d){return d.continent }),
-    // continents = continent.group().reduce(reduceAddContinent, reduceRemoveContinent, reduceInitialContinent).order(order),
-    // type = cf.dimension(function(d){return d.type}),
-    // types = type.group();
-
-    // ctgry :d.ctgry,
-    // dts_id: d.dts_id,
-    // date: new Date(+d.anno_mese.split('/')[0],+d.anno_mese.split('/')[1]-1),
-    // tipo: d.tipo,
-    // nome: d.nome,
-    // lnk_data: d.lnk_data,
-    // dwnld: dwnld,
-    // pgvws: pgvws,
-    // rtng: rtng,
-    // odabes: odabes
-
     var a = 0.5,
         b = 0.5,
         c = 0.5;

@@ -2,6 +2,15 @@
   <div class="row">
     <div class="col-md-3 filter-container">
 
+      <div class="statsInfo">
+        <p>
+          Datasets: {{totalDatasets | number}}
+        </p>
+        <p>
+          Ultimo aggiornamento: {{lastModified}}
+        </p>
+      </div>
+
       <div class="filter-dimension-container">
         <button type="button" class="btn btn-default" ng-click="collapseModel.odabes = !collapseModel.odabes">odabes</button>
         <div uib-collapse="collapseModel.odabes" expanding="refreshSlider()">
