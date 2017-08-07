@@ -37,4 +37,7 @@ angular
       .otherwise({
         redirectTo: '/home'
       });
-  });
+  })
+  .config(['cfpLoadingBarProvider',function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+  }])

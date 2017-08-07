@@ -8,7 +8,10 @@
       width = 600,
       dispatch = d3.dispatch("brushEnd"),
       resetBrush = false,
-      duration = 1000;
+      normalize = false,
+      duration = 1000,
+      maxY,
+      extent;
 
 
   function timeline(selection){
@@ -42,16 +45,41 @@
 
       var area = d3.area()
           .x(function(d) { return x(d.date); })
-          .y1(function(d) { return y(d.value); });
+          .y1(function(d) { return y(d.value); })
+          .curve(d3.curveStep)
 
-      x.domain(d3.extent(data, function(d) { return d.date; }));
-      y.domain([0, d3.max(data, function(d) { return d.value; })]);
+      var timeRange = d3.timeMonth.range(extent);
+      var dateMap = data.map(function(d){return d.date.getTime()})
+      timeRange.forEach(function(d){
+        if(dateMap.indexOf(d.getTime()) == -1){
+          data.push({date:d,value:null})
+        }
+      })
+      //x.domain(d3.extent(data, function(d) { return d.date; }));
+      x.domain(extent);
+      if(normalize){
+        y.domain([0, maxY]);
+      }else{
+        y.domain([0, d3.max(data, function(d) { return d.value; })]);
+      }
+
       area.y0(y(0));
 
-      chart.append("path")
-        .datum(data)
-        .attr("fill", "steelblue")
-        .attr("d", area);
+      var path = chart.selectAll('path').data([data])
+
+      path.enter().append("path")
+        .attr("fill", "#00C5CA")
+        .attr("d", area)
+        //.attr('fill-opacity',0)
+        //.transition()
+        //.attr('fill-opacity',1)
+
+
+      // path.transition().duration(duration)
+      //   .attr("d", area);
+
+      path.attr("d", area);
+
 
       // var bar = chart.selectAll("rect")
       //     .data(bins, function(d,i){
@@ -172,6 +200,24 @@
   timeline.width = function(x){
     if (!arguments.length) return width;
     width = x;
+    return timeline;
+  }
+
+  timeline.extent = function(x){
+    if (!arguments.length) return extent;
+    extent = x;
+    return timeline;
+  }
+
+  timeline.maxY = function(x){
+    if (!arguments.length) return maxY;
+    maxY = x;
+    return timeline;
+  }
+
+  timeline.normalize = function(x){
+    if (!arguments.length) return normalize;
+    normalize = x;
     return timeline;
   }
 

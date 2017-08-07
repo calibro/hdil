@@ -78,7 +78,6 @@ angular.module('hdilApp')
      }
      return p;
 
-      return p;
     }
 
     function reduceInitialSingle() {
@@ -87,7 +86,13 @@ angular.module('hdilApp')
 
 
     function reduceAdd(p, v) {
-      ++p.count;
+      if(v.dts_id in p.datasets){
+          p.datasets[v.dts_id] += 1
+      }
+      else{
+          p.datasets[v.dts_id] = 1;
+          p.count++;
+      }
       p.dwnld += v.dwnld;
       p.pgvws += v.pgvws;
       p.rtng += v.rtng;
@@ -96,7 +101,11 @@ angular.module('hdilApp')
     }
 
     function reduceRemove(p, v) {
-      --p.count;
+      p.datasets[v.dts_id]--;
+       if(p.datasets[v.dts_id] === 0){
+           delete p.datasets[v.dts_id];
+           p.count--;
+       }
       p.dwnld -= v.dwnld;
       p.pgvws -= v.pgvws;
       p.rtng -= v.rtng;
@@ -105,7 +114,7 @@ angular.module('hdilApp')
     }
 
     function reduceInitial() {
-      return {count:0, odabes: 0, dwnld: 0, pgvws: 0, rtng: 0};
+      return {count:0, odabes: 0, dwnld: 0, pgvws: 0, rtng: 0, datasets:{}};
     }
 
     function orderValue(d) {
@@ -161,6 +170,9 @@ angular.module('hdilApp')
           break;
       }
 
+      var dateRange = d3.extent(dates.all(), function(d){return d.key});
+      var maxOdabesMonth = d3.max(source, function(d){return d.value.odabes});
+
       var nest = d3.nest()
         .key(function(d){return d.key.split(' - ')[1]})
         .entries(source)
@@ -179,6 +191,8 @@ angular.module('hdilApp')
         d.dwnld = d3.sum(d.values, function(v){return v.value.dwnld})
         d.rtng = d3.sum(d.values, function(v){return v.value.rtng})
         d.pgvws = d3.sum(d.values, function(v){return v.value.pgvws})
+        d.extent = dateRange;
+        d.maxOdabesMonth = maxOdabesMonth;
         delete d.values
         return d
       })

@@ -10,6 +10,10 @@ h1,h2,h3,h4,h5,h6{
   font-weight: bold;
 }
 
+#loading-bar .bar {
+  background-color: white;
+  height: 3px;
+}
 
 .blue-italia{
   color: #0066CC;
@@ -191,6 +195,16 @@ h1,h2,h3,h4,h5,h6{
   flex: 0 0 10%;
 }
 
+#mainTable thead > tr > th.vizCell,
+#mainTable tbody > tr > td.vizCell{
+  flex: 0 1 30%;
+}
+
+#mainTable thead > tr > th.titleCell,
+#mainTable tbody > tr > td.titleCell{
+  flex: 0 1 25%;
+}
+
 
 /* slider */
 
@@ -204,7 +218,8 @@ h1,h2,h3,h4,h5,h6{
 .filter-wrapper{
   width: 100%;
   overflow-y: scroll;
-  height: 350px;
+  max-height: 300px;
+  min-height: 100px;
 }
 
 .filter-checkbox-wrapper{
@@ -227,12 +242,7 @@ h1,h2,h3,h4,h5,h6{
   text-align: right;
 }
 
-.vizCell{
-  min-width: 30%;
-}
-
 .titleCell{
-  min-width: 25%;
   white-space:nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -241,6 +251,8 @@ h1,h2,h3,h4,h5,h6{
 /* timeline */
 .odabes-timeline{
   width: 100%;
+  display: block;
+  min-height: 1px;
 }
 
 /* utilities */
