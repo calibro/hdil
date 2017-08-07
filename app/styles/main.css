@@ -130,6 +130,44 @@ h1,h2,h3,h4,h5,h6{
   flex-grow: 0;
 }
 
+.table-controller {
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+.table-controller h6{
+  color: #5A6772;
+  font-weight: 400;
+}
+
+.table-controller .btn-primary {
+  background: transparent;
+  color: #5A6772;
+  border:none;
+  padding: 6px 0;
+  border-radius: 0;
+  margin-right: 12px;
+  text-transform: capitalize;
+  font-size: 18px;
+  opacity: 0.5;
+}
+
+.btn-primary:active:hover, .btn-primary.active:hover{
+  background: transparent;
+  box-shadow: none;
+  color: #5A6772;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+.table-controller .btn-primary.active{
+  box-shadow: none;
+  border-bottom: 4px #0066CC solid;
+  font-weight: 700;
+  color: #0066CC;
+  opacity: 1;
+}
+
 .table-pagination{
     text-align: center;
 }
@@ -238,6 +276,72 @@ h1,h2,h3,h4,h5,h6{
   display: inline-block;
   text-overflow: ellipsis;
 }
+
+.accordion {
+  width: 100%;
+  padding: 10px 0;
+  border-top: 1px solid #E1D4D4;
+  font-size: 18px;
+  color: #FFFFFF;
+  line-height: 32px;
+  text-transform: capitalize;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.accordion i{
+  float:right;
+  padding-top: 5px;
+}
+
+.slider-container h5{
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #FFFFFF;
+  font-weight: 400;
+}
+
+.in {
+  margin-bottom: 30px;
+}
+
+.filter-controls{
+  float: right;
+  margin-bottom: 5px;
+  margin-top: 2px;
+}
+
+.filter-controls span{
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.filter-tempo {
+  border-bottom: 1px solid #E1D4D4;
+}
+
+.statsInfo{
+  padding: 30px 0;
+}
+
+.statsInfo p {
+  font-size: 18px;
+}
+
+.filter-controls .form-group{
+  float: left;
+  margin-left: 0;
+}
+
+.filter-checkbox-wrapper .btn-default {
+    color: #333;
+    color: #DDDDDD;
+    background-color: transparent;
+    border-color: #ccc;
+    margin-right: 3px;
+}
+
+
 
 /* bars */
 
