@@ -273,6 +273,10 @@ h1,h2,h3,h4,h5,h6{
   background-color: #00C5CA;
 }
 
+.rzslider .rz-selection {
+    background: #00C5CA;
+}
+
 /* filters */
 
 .filter-wrapper{
@@ -393,7 +397,7 @@ h1,h2,h3,h4,h5,h6{
 .xAxis{
   font-family: 'Titillium Web', Arial, sans-serif;
   font-weight: 400;
-  font-size: 8px;
+  font-size: 10px;
 }
 
 .xAxis .tick text{

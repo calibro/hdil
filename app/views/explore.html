@@ -81,7 +81,7 @@
              </div>
           <div class="filter-controls">
             <span ng-click="filterSelectAll('datasets')">select all</span> / <span ng-click="filterDeSelectAll('datasets')">deselect all</span>
-  
+
           </div>
           <div class="filter-wrapper" ng-init="filteredDts = {}">
             <div class="filter-dts-loading" ng-if="!showDatasetsList">
@@ -121,16 +121,16 @@
               <label class="btn btn-primary" ng-model="dimensionModel" uib-btn-radio="'dts_id'">Dataset</label>
           </div>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-4">
           <h6>Mostra odabes</h6>
           <div class="btn-group">
               <label class="btn btn-primary" ng-model="odabesModel" uib-btn-radio="'aggregated'">aggregato</label>
               <label class="btn btn-primary" ng-model="odabesModel" uib-btn-radio="'evolution'">evoluzione</label>
           </div>
         </div>
-        <div class="col-md-2 normalizza">
+        <div class="col-md-2 normalizza" ng-show="odabesModel=='evolution'">
           <checkbox ng-model="normModel"></checkbox>
-          normalizza
+          stessa scala
         </div>
       </div>
       <div class="row table-container">

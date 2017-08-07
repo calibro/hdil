@@ -41,6 +41,6 @@
     "test": "karma start test/karma.conf.js"
   },
   "dependencies": {
-    "grunt-gh-pages": "^2.0.0"
+    "gh-pages": "^1.0.0"
   }
 }
