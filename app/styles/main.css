@@ -168,6 +168,13 @@ h1,h2,h3,h4,h5,h6{
   opacity: 1;
 }
 
+.normalizza {
+  padding-top: 45px;
+  text-transform: capitalize;
+  color: #5A6772;
+  font-size: 18px;
+}
+
 .table-pagination{
     text-align: center;
 }
@@ -183,6 +190,10 @@ h1,h2,h3,h4,h5,h6{
   display: flex;
 }
 
+.table > thead > tr > th {
+  text-transform: capitalize;
+}
+
 
 #mainTable {
   background: white;
@@ -195,6 +206,7 @@ h1,h2,h3,h4,h5,h6{
 
 #mainTable thead {
   display: block;
+  background-color: #F2F2ED;
 }
 
 #mainTable thead {
@@ -249,6 +261,10 @@ h1,h2,h3,h4,h5,h6{
 .rzslider .rz-bubble.rz-limit,
 .rzslider .rz-bubble{
   color: white;
+}
+
+.rzslider .rz-pointer{
+  background-color: #00C5CA;
 }
 
 /* filters */
