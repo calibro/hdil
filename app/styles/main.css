@@ -202,6 +202,7 @@ h1,h2,h3,h4,h5,h6{
   width: 100%;
   flex-direction: column;
   margin-bottom: 0px;
+  font-size: 16px;
 }
 
 #mainTable thead {
@@ -253,6 +254,11 @@ h1,h2,h3,h4,h5,h6{
 #mainTable thead > tr > th.titleCell,
 #mainTable tbody > tr > td.titleCell{
   flex: 0 1 25%;
+}
+
+.rowInfo {
+  font-size: 12px;
+  opacity: 0.5;
 }
 
 
