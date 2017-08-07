@@ -73,12 +73,12 @@
              </div>
             <span ng-click="filterSelectAll('datasets')">select all</span> / <span ng-click="filterDeSelectAll('datasets')">deselect all</span>
           </div>
-          <div class="filter-wrapper">
+          <div class="filter-wrapper" ng-init="filteredDts = {}">
             <div class="filter-dts-loading" ng-if="!showDatasetsList">
               loading...
             </div>
             <div vs-repeat ng-if="showDatasetsList">
-              <div class="filter-checkbox-wrapper" ng-repeat="dataset in datasets | filterDatasetsExclusion:searchDatasets:dts_dict ">
+              <div class="filter-checkbox-wrapper" ng-repeat="dataset in filteredDts.result = ( datasets | filterDatasetsExclusion:searchDatasets:dts_dict )">
 
                 <checkbox
                     ng-model="filtersModel.datasets[dataset.key]"

@@ -17,8 +17,8 @@ angular.module('hdilApp')
 
       if(value){
         var output = input.filter(function(d){
-          var title = dict.get(d.key).nome;
-          return title.indexOf(value) !== -1;
+          var title = dict.get(d.key).nome.toLowerCase();
+          return title.toLowerCase().indexOf(value) !== -1;
         })
       }else{
         output = input;
