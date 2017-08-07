@@ -74,6 +74,9 @@
             <span ng-click="filterSelectAll('datasets')">select all</span> / <span ng-click="filterDeSelectAll('datasets')">deselect all</span>
           </div>
           <div class="filter-wrapper">
+            <div class="filter-dts-loading" ng-if="!showDatasetsList">
+              loading...
+            </div>
             <div vs-repeat ng-if="showDatasetsList">
               <div class="filter-checkbox-wrapper" ng-repeat="dataset in datasets | filterDatasetsExclusion:searchDatasets:dts_dict ">
 
@@ -133,7 +136,7 @@
             <tbody>
               <tr ng-repeat="row in dataTable | tableExclusion | orderBy:'odabes':true | limitTo:tableItemsPerPage:tableOffset track by row.title">
                 <td ng-repeat="head in dataTableHeaders" ng-class="{fitCell: head == 'odabes', vizCell: head == 'viz', titleCell:  head == 'title'}">
-                  <span ng-if="head != 'viz' && dimensionModel != 'dts_id'">{{row[head] | tablenumber}}<span ng-if="head == 'title'" class="rowInfo"><br />{{row.count | tablenumber}} dataset</span></span>
+                  <span ng-if="head != 'viz' && dimensionModel != 'dts_id'">{{row[head] | tablenumber}}<span ng-if="head == 'title'" class="rowInfo"><br />{{row.count}} datasets</span></span>
                   <span ng-if="head == 'title' && dimensionModel == 'dts_id'">
                     <a ng-href="{{dts_dict.get(row[head]).lnk_data}}" target="_blank">{{dts_dict.get(row[head]).nome }}</a>
                     <br/>
