@@ -93,6 +93,15 @@ angular.module('hdilApp')
 
     $scope.dataTable;
     $scope.dataTableHeaders;
+    $scope.headerDict = {
+      'odabes': 'odabes',
+      'dwnld': 'download',
+      'pgvws':'visualizzazioni',
+      'rtng': 'voti',
+      'ctgry': 'categoria',
+      'type': 'tipologia',
+      'dts_id': 'dataset'
+    }
 
     // pagination
     $scope.tableItemsPerPage = 100;

@@ -129,7 +129,9 @@
             <thead>
               <tr>
                 <th ng-repeat="head in dataTableHeaders" ng-class="{fitCell: head == 'odabes',vizCell: head == 'viz', titleCell:  head == 'title' }">
-                  {{head}}
+                  <span ng-if="head == 'title'">{{headerDict[dimensionModel]}}</span>
+                  <span ng-if="head == 'viz'"></span>
+                  <span ng-if="head != 'viz' && head != 'title'">{{headerDict[head]}}</span>
                 </th>
               </tr>
             </thead>
