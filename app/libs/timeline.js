@@ -52,7 +52,7 @@
       var dateMap = data.map(function(d){return d.date.getTime()})
       timeRange.forEach(function(d){
         if(dateMap.indexOf(d.getTime()) == -1){
-          data.push({date:d,value:null})
+          data.push({date:d,value:0})
         }
       })
       //x.domain(d3.extent(data, function(d) { return d.date; }));
