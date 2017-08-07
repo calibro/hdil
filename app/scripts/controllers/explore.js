@@ -35,7 +35,20 @@ angular.module('hdilApp')
 
     $scope.showDatasetsList = false;
 
-    $scope.sliders = {}
+    $scope.sliders = {};
+
+    var upadateOdabes = function(){
+      var values = [
+        $scope.sliders.dwnld.value,
+        $scope.sliders.pgvws.value,
+        $scope.sliders.rtng.value
+      ]
+      cfservice.upadateOdabes(values)
+
+      //mock updates! find a better way!
+      cfservice.typeSingle().filter('API')
+      cfservice.typeSingle().filterAll()
+    };
 
     $scope.sliders.dwnld = {
       value: 0.5,
@@ -43,7 +56,8 @@ angular.module('hdilApp')
         floor: 0.0,
         ceil: 1.0,
         precision:1,
-        step:0.1
+        step:0.1,
+        onEnd:upadateOdabes
       }
     };
 
@@ -53,7 +67,8 @@ angular.module('hdilApp')
         floor: 0.0,
         ceil: 1.0,
         precision:1,
-        step:0.1
+        step:0.1,
+        onEnd:upadateOdabes
       }
     };
 
@@ -64,7 +79,8 @@ angular.module('hdilApp')
         floor: 0.0,
         ceil: 1.0,
         precision:1,
-        step:0.1
+        step:0.1,
+        onEnd:upadateOdabes
       }
     };
 
@@ -313,11 +329,11 @@ angular.module('hdilApp')
       })
 
       $scope.$watchGroup(['sliders.dwnld.value','sliders.pgvws.value','sliders.rtng.value'], function(newValue, oldValue){
-        cfservice.upadateOdabes(newValue)
-
-        //mock updates! find a better way!
-        cfservice.typeSingle().filter('API')
-        cfservice.typeSingle().filterAll()
+        // cfservice.upadateOdabes(newValue)
+        //
+        // //mock updates! find a better way!
+        // cfservice.typeSingle().filter('API')
+        // cfservice.typeSingle().filterAll()
       })
 
       cfservice.cf().onChange(function(event){
