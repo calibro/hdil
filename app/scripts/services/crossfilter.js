@@ -178,6 +178,12 @@ angular.module('hdilApp')
         .entries(source)
 
       var output = nest.map(function(d){
+        var datasets = d3.map();
+        d.values.forEach(function(v){
+          d3.keys(v.value.datasets).forEach(function(dts){
+            datasets.set(dts,dts)
+          })
+        })
         d.title = d.key
         delete d.key
         d.evolution = d.values.map(function(v){
@@ -191,6 +197,7 @@ angular.module('hdilApp')
         d.dwnld = d3.sum(d.values, function(v){return v.value.dwnld})
         d.rtng = d3.sum(d.values, function(v){return v.value.rtng})
         d.pgvws = d3.sum(d.values, function(v){return v.value.pgvws})
+        d.count = datasets.size()
         d.extent = dateRange;
         d.maxOdabesMonth = maxOdabesMonth;
         delete d.values
