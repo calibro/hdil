@@ -264,6 +264,20 @@ h1,h2,h3,h4,h5,h6{
   min-height: 1px;
 }
 
+.xAxis{
+  font-family: 'Titillium Web', Arial, sans-serif;
+  font-weight: 400;
+  font-size: 8px;
+}
+
+.xAxis .tick text{
+  fill:#9B9B9B;
+}
+
+.xAxis .domain{
+  display: none
+}
+
 /* utilities */
 
 .flex{
