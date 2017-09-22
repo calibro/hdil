@@ -25,6 +25,8 @@ angular.module('hdilApp')
       datasets:{}
     }
 
+    $scope.errors;
+
     $scope.dimensionModel = 'ctgry';
 
     $scope.odabesModel = 'aggregated';

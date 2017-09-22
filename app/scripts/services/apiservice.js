@@ -31,7 +31,7 @@ angular.module('hdilApp')
               deferred.resolve(response.data);
             },
             function(err){
-              deferred.reject("An error occured while fetching url");
+              deferred.reject(err);
             }
           )
         return deferred.promise;
@@ -52,7 +52,7 @@ angular.module('hdilApp')
               deferred.resolve(response.data);
             },
             function(err){
-              deferred.reject("An error occured while fetching url");
+              deferred.reject(err);
             }
           )
         return deferred.promise;
@@ -72,7 +72,7 @@ angular.module('hdilApp')
               deferred.resolve(response.data);
             },
             function(err){
-              deferred.reject("An error occured while fetching url");
+              deferred.reject(err);
             }
           )
         return deferred.promise;
