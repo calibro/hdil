@@ -17,7 +17,7 @@
   function timeline(selection){
     selection.each(function(data){
       var chart;
-      var margin = {top: 0, right: 0, bottom: 0, left: 0},
+      var margin = {top: 10, right: 10, bottom: 0, left: 10},
           chartWidth = width - margin.left - margin.right,
           chartHeight = height - margin.top - margin.bottom;
 
@@ -55,7 +55,9 @@
           data.push({date:d,value:0})
         }
       })
-      //x.domain(d3.extent(data, function(d) { return d.date; }));
+
+      var bisectDate = d3.bisector(function(d) { return d.date; }).left;
+
       x.domain(extent);
       if(normalize){
         y.domain([0, maxY]);
@@ -65,129 +67,77 @@
 
       area.y0(y(0));
 
+
       var path = chart.selectAll('path').data([data])
 
       path.enter().append("path")
         .attr("fill", "#00C5CA")
         .attr("d", area)
-        //.attr('fill-opacity',0)
-        //.transition()
-        //.attr('fill-opacity',1)
-
-
-      // path.transition().duration(duration)
-      //   .attr("d", area);
 
       path.attr("d", area);
 
 
-      // var bar = chart.selectAll("rect")
-      //     .data(bins, function(d,i){
-      //       return i
-      //     })
-      //
-      // bar.enter().append("rect")
-      //   .attr("class", "bar")
-      //   .attr("x", 1)
-      //   .attr("transform", function(d) {
-      //     return "translate(" + x(d.x0) + "," + (chartHeight - y(d.length)) + ")";
-      //   })
-      //   .attr("width", function(d) { return x(d.x1) - x(d.x0) -1 ; })
-      //   .attr("height", function(d) {
-      //     return y(d.length)
-      //   });
-      //
-      // bar.transition().duration(duration)
-      //   .attr("transform", function(d) {
-      //     return "translate(" + x(d.x0) + "," + (chartHeight - y(d.length)) + ")";
-      //   })
-      //   .attr("height", function(d) {
-      //     return y(d.length)
-      //   });
+      var xAxis = chart.select('.xAxis');
 
-      // var xAxis = chart.select('.xAxis');
-      //
-      // if(xAxis.empty()){
-      //   chart.append("g")
-      //       .attr('class', 'xAxis')
-      //       .attr("transform", "translate(0," + chartHeight + ")")
-      //       .call(
-      //         d3.axisBottom(x).ticks(3)
-      //         .tickFormat(function (d) {
-      //                 return x.tickFormat(3,d3.format(",.1s"))(d)
-      //         })
-      //
-      //       );
-      // }else{
-      //   xAxis.call(d3.axisBottom(x).ticks(3))
-      // }
+      if(xAxis.empty()){
+        chart.append("g")
+            .attr('class', 'xAxis')
+            .attr("transform", "translate(0," + chartHeight + ")")
+            .call(
+              d3.axisBottom(x).tickSize(-chartHeight)
+            );
+      }else{
+        xAxis.call(d3.axisBottom(x).tickSize(-chartHeight))
+      }
 
-      // var yAxis = chart.select('.yAxis');
-      //
-      // if(yAxis.empty()){
-      //   chart.append("g")
-      //       .attr('class', 'yAxis')
-      //       .call(d3.axisRight(y.copy().range([chartHeight,0])).tickSizeOuter(0).ticks(4));
-      // }else{
-      //   yAxis.transition().duration(duration).call(d3.axisRight(y.copy().range([chartHeight,0])).tickSizeOuter(0).ticks(4));
-      // }
+      var focus = chart.select('.focus');
+      if(focus.empty()){
+        focus = chart.append("g")
+            .attr("class", "focus")
+            .style("display", "none");
+
+        focus.append("circle")
+            .attr("r", 2);
+
+        focus.append("text")
+            .attr("text-anchor", "middle")
+            .attr("font-size","10px")
+            .attr("dy", "-3px");
+      }
+
+      var overlay = chart.select('.overlay');
+      if(overlay.empty()){
+
+        var overlayWidth = x(data[data.length-1].date)-x(data[0].date),
+            overlayX = x(data[0].date);
+
+        chart.append("rect")
+          .attr("class", "overlay")
+          .attr("width", overlayWidth)
+          .attr("height", chartHeight)
+          .attr("x", overlayX)
+          .attr("fill", "none")
+          .style("pointer-events","all")
+          .style("cursor","none")
+          .on("mouseover", function() { focus.style("display", null); })
+          .on("mouseout", function() { focus.style("display", "none"); })
+          .on("mousemove", mousemove);
+      }else{
+        overlay.on("mousemove", mousemove);
+      }
 
 
-      // var brush = d3.brushX()
-      //   .extent([[0, 0], [chartWidth, chartHeight]])
-      //   .on("brush", movehandles)
-      //   .on("end", brushed)
-      //
-      // var brushG = chart.select('.brush')
-      // var handle;
-      //
-      // if(brushG.empty()){
-      //   chart.append("g")
-      //       .attr("class", "brush")
-      //       .call(brush)
-      //
-      //   handle = chart.select('.brush').selectAll(".handle--custom")
-      //     .data([{type: "w"}, {type: "e"}])
-      //     .enter().append("circle")
-      //       .attr("class", "handle--custom")
-      //       .attr("fill", "#666")
-      //       .attr("cursor", "ew-resize")
-      //       .attr('cx', 0)
-      //       .attr('cy', 0)
-      //       .attr('r',4)
-      //
-      //   chart.select('.brush')
-      //       .call(brush.move, x.range())
-      // }else{
-      //   handle = chart.select('.brush').selectAll(".handle--custom");
-      // }
-      //
-      // if(resetBrush){
-      //   chart.select('.brush')
-      //       .call(brush.move, x.range())
-      // }
-      //
-      // function brushed() {
-      //   var s = d3.event.selection;
-      //   if(!s){
-      //     chart.select('.brush')
-      //         .call(brush.move, x.range())
-      //     s = x.range();
-      //   }
-      //   var newDateFilter = [x.invert(s[0]), x.invert(s[1])]
-      //   handle.attr("display", null).attr("transform", function(d, i) { return "translate(" + s[i] + "," + chartHeight / 2 + ")"; });
-      //   dispatch.call("brushEnd", this, newDateFilter);
-      // }
-      //
-      // function movehandles() {
-      //   var s = d3.event.selection
-      //   if(!s){
-      //     chart.select('.brush')
-      //         .call(brush.move, x.range())
-      //   }
-      //   handle.attr("display", null).attr("transform", function(d, i) { return "translate(" + s[i] + "," + chartHeight / 2 + ")"; });
-      // }
-
+      function mousemove() {
+        var x0 = x.invert(d3.mouse(this)[0]),
+          i = bisectDate(data, x0, 1),
+          d0 = data[i - 1],
+          d1 = data[i]?data[i]:data[i - 1];
+        var d = x0 - d0.date.getTime() > d1.date.getTime() - x0 ? d1 : d0;
+        focus.attr("transform", "translate(" + x(d.date) + "," + y(d.value) + ")");
+        focus.select("text").text(function() {
+          return d.value===0?'':d3.format(",.0f")(d.value);
+        });
+      }
     }); //end selection
   } // end timeline
 

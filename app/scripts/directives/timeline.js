@@ -25,7 +25,7 @@ angular.module('hdilApp')
 
         $timeout(function(){
           chartWidth = parseInt(chart.style("width").replace("px",""));
-          chartHeight = 20;
+          chartHeight = parseInt(chart.style("height").replace("px",""));
 
           timeline = hdil.timeline()
                  .width(chartWidth)
