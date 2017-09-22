@@ -151,7 +151,7 @@
                 <td ng-repeat="head in dataTableHeaders" ng-class="{fitCell: head == 'odabes', vizCell: head == 'viz', titleCell:  head == 'title'}">
                   <span ng-if="head != 'viz' && dimensionModel != 'dts_id'">{{row[head] | tablenumber}}<span ng-if="head == 'title'" class="rowInfo"><br />{{row.count}} datasets</span></span>
                   <span ng-if="head == 'title' && dimensionModel == 'dts_id'">
-                    <a ng-href="{{dts_dict.get(row[head]).lnk_data}}" target="_blank" uib-tooltip="{{dts_dict.get(row[head]).nome }}" tooltip-placement="left" tooltip-append-to-body="true">{{dts_dict.get(row[head]).nome }}</a>
+                    <a ng-href="{{dts_dict.get(row[head]).lnk_data}}" target="_blank" uib-tooltip="{{dts_dict.get(row[head]).nome }}" tooltip-placement="left" tooltip-append-to-body="true" tooltip-class="dts-tooltip">{{dts_dict.get(row[head]).nome }}</a>
                     <br/>
                     <span class="rowInfo">{{dts_dict.get(row[head]).ctgry}} - {{dts_dict.get(row[head]).tipo}}</span>
                   </span>
