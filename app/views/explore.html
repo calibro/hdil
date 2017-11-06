@@ -88,7 +88,12 @@
               loading...
             </div>
             <div vs-repeat ng-if="showDatasetsList">
-              <div class="filter-checkbox-wrapper" ng-repeat="dataset in filteredDts.result = ( datasets | filterDatasetsExclusion:searchDatasets:dts_dict )">
+              <div
+                class="filter-checkbox-wrapper"
+                uib-tooltip="{{dts_dict.get(dataset.key).nome}}"
+                tooltip-append-to-body="true"
+                tooltip-class="dts-tooltip"
+                ng-repeat="dataset in filteredDts.result = ( datasets | filterDatasetsExclusion:searchDatasets:dts_dict )">
 
                 <checkbox
                     ng-model="filtersModel.datasets[dataset.key]"
