@@ -1,4 +1,4 @@
-# Valore sociale della visualizzazione di open data di Regione Lombardia
+# Human Data Interaction in Lombardia: Sviluppo di servizi di visualizzazione interattiva per il pubblico e l’amministratore
 
 Interfaccia sviluppato all'interno delle attività di ricerca del progetto "Il Valore Sociale degli Open Data" promosso da Regione Lombardia. Per ulteriori informazioni (anche di natura metodologica) è possibile contattare il coordinatore del progetto, il Dott. Ing. Federico Cabitza (cabitza@disco.unimib.it)
 
