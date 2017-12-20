@@ -1,6 +1,6 @@
 # Human Data Interaction in Lombardia: Sviluppo di servizi di visualizzazione interattiva per il pubblico e l’amministratore
 
-Interfaccia sviluppato all'interno delle attività di ricerca del progetto "Il Valore Sociale degli Open Data" promosso da Regione Lombardia. Per ulteriori informazioni (anche di natura metodologica) è possibile contattare il coordinatore del progetto, il Dott. Ing. Federico Cabitza (cabitza@disco.unimib.it)
+Servizio che permette di visualizzare, per un certo insieme di datasets presenti sul portale Open Data della Regione Lombardia, il loro punteggio di engagement (coinvolgimento), ovvero un indice del livello di interazione di un utente con il portale Open Data di Regione Lombardia. Tale punteggio si può calcolare a livello di singolo dataset, di categoria e di diversa granularità temporale. Per ulteriori informazioni (anche di natura metodologica) è possibile contattare il coordinatore del progetto, il Dott. Ing. Federico Cabitza (cabitza @ disco.unimib.it)
 
 ## Installation
 If you want to run your instance of hdil locally on your machine, be sure you have the following requirements installed.
